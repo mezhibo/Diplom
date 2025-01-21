@@ -229,7 +229,7 @@ variable "os_image_node" {
 
 Манифесты готовы, теперь делаем Terraform apply и создаем наши ресурсы
 
-![Image alt](скрин1)
+![Image alt](https://github.com/mezhibo/Diplom/blob/1e248f8ced6090ba91fd1e59c430e38e2ca06422/IMG/1.jpg)
 
 
 Видим что наша сеть и подсети создались (дефолтные создает сам яндекс в клауде, удалять не стал так все пересоздадутся, и работе не мешают)
@@ -238,24 +238,24 @@ variable "os_image_node" {
 Создался бакет для хранения
 
 
-![Image alt](скрин2)
+![Image alt](https://github.com/mezhibo/Diplom/blob/1e248f8ced6090ba91fd1e59c430e38e2ca06422/IMG/2.jpg)
 
 
 Теперь через веб-интерфейс сходим в бакет, и увидим там файлы стейтов (состояний) Terraform
 
 
-![Image alt](скрин3)
+![Image alt](https://github.com/mezhibo/Diplom/blob/1e248f8ced6090ba91fd1e59c430e38e2ca06422/IMG/3.jpg)
 
 
 Скачиваем его к себе и видим описание всех созданных нами ресурсов через Terraform
 
 
-![Image alt](скрин4)
+![Image alt](https://github.com/mezhibo/Diplom/blob/1e248f8ced6090ba91fd1e59c430e38e2ca06422/IMG/4.jpg)
 
 Теперь также одной командой грохнем всю инфраструктуру и пойдем писать далее Terraform манифесты для виртуальных машин под наш k8s кластер.
 
 
-![Image alt](скрин5)
+![Image alt](https://github.com/mezhibo/Diplom/blob/1e248f8ced6090ba91fd1e59c430e38e2ca06422/IMG/5.jpg)
 
 
 Первая часть диплома по подготовке инфраструктуры готова. Теперь можно приступать к созданию окружения на ВМ для развертывания на них k8s кластера.
@@ -518,12 +518,12 @@ all:
 
 Выполянем terraform apply и создаем теперь полностью готовое окружение где будем разворчивать k8s и в него наше приложение и приложения мониторинга
 
-![Image alt](скрин6)
+![Image alt](https://github.com/mezhibo/Diplom/blob/1e248f8ced6090ba91fd1e59c430e38e2ca06422/IMG/6.jpg)
 
 
 Все, видим что ресурсы созданы, оутпуты показаны, идем проверим наш файл авто-инвентори, как он заполнился
 
-![Image alt](скрин7)
+![Image alt](https://github.com/mezhibo/Diplom/blob/1e248f8ced6090ba91fd1e59c430e38e2ca06422/IMG/7.jpg)
 
 Все, видим что все отлично, теперь подготовим Ansible - плейбук, который подготовит наш мастер-хост к настройке воркер-нод через kubespray
 
@@ -614,7 +614,7 @@ all:
 ansible-playbook -i inventory/hosts.yml site.yml
 ```
 
-![Image alt](скрин8)
+![Image alt]([скрин8](https://github.com/mezhibo/Diplom/blob/1e248f8ced6090ba91fd1e59c430e38e2ca06422/IMG/8.jpg))
 
 
 
@@ -637,7 +637,7 @@ ansible-playbook -i inventory/mycluster/hosts.yml cluster.yml -b -v
 
 Видим что пошел процесс развертывания кластера k8s
 
-![Image alt](скрин9)
+![Image alt](https://github.com/mezhibo/Diplom/blob/1e248f8ced6090ba91fd1e59c430e38e2ca06422/IMG/9.jpg)
 
 Процесс достаточно долгий, минут 20 точно.
 
