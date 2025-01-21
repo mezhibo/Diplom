@@ -641,5 +641,102 @@ ansible-playbook -i inventory/mycluster/hosts.yml cluster.yml -b -v
 
 Процесс достаточно долгий, минут 20 точно.
 
+В этот раз хватило и 12 минут)) 
+
+Видим что все завершилось у нас удачно
 
 
+![Image alt](https://github.com/mezhibo/Diplom/blob/dc524d33f6f7c3109adb35a02fd34c2d8bc3c3ed/IMG/10.jpg)
+
+
+Для выполнения команд kubectl без sudo скопируем папку .kube в домашнюю дирректорию пользователя и сменим владельца, а также группу владельцев папки с файлами:
+
+```
+sudo cp -r /root/.kube ~/
+sudo chown -R debian:debian ~/.kube
+```
+
+
+И теперь командой
+
+```
+kubectl get pods --all-namespaces
+```
+
+Прверим как работает наш кластер
+
+
+![Image alt](https://github.com/mezhibo/Diplom/blob/dc524d33f6f7c3109adb35a02fd34c2d8bc3c3ed/IMG/11.jpg)
+
+
+На этом второй этап готов! Кластер под наше приложение создан!
+
+
+
+**Создание тестового приложения**
+
+
+Мы не разработчики приложений, поэтому сильно мудрить не будем, просто создадми свой образ nginx со стачной страницей.
+
+
+
+Первым этапом создадим на github пустую репу нашего тестового приложения, и склонируем ее себе
+
+```
+git clone https://github.com/mezhibo/Test-application.git
+```
+
+Создадим в этом репозитории файл содержащую HTML-код ниже:
+index.html
+
+```
+<html>
+<head>
+Hey, Netology
+</head>
+<body>
+<h1>Dev Ops Mezhibo</h1>
+</body>
+</html>
+```
+
+Создадим Dockerfile, который будет запускать веб-сервер Nginx в фоне с индекс страницей:
+Dockerfile
+
+```
+FROM nginx:1.27-alpine
+
+COPY index.html /usr/share/nginx/html
+```
+Теперь запушим эти изменения в наш гитхаб репозиторий
+
+![Image alt]([скрин12](https://github.com/mezhibo/Diplom/blob/dc524d33f6f7c3109adb35a02fd34c2d8bc3c3ed/IMG/12.jpg))
+
+
+Создадим папку для приложения mkdir mynginx и скопируем в нее ранее созданые файлы.
+В этой папке выполним сборку приложения:
+
+```
+sudo docker build -t mezhibo/nginx:v1 .
+```
+
+![Image alt](https://github.com/mezhibo/Diplom/blob/dc524d33f6f7c3109adb35a02fd34c2d8bc3c3ed/IMG/13.jpg)
+
+
+Проверим что образ сбилдился
+
+![Image alt](https://github.com/mezhibo/Diplom/blob/dc524d33f6f7c3109adb35a02fd34c2d8bc3c3ed/IMG/14.jpg)
+
+
+
+И теперь толкнем наш собрыный контейнерв в Docker Hub
+
+
+
+![Image alt](https://github.com/mezhibo/Diplom/blob/dc524d33f6f7c3109adb35a02fd34c2d8bc3c3ed/IMG/15.jpg)
+
+
+
+Зайдем в Docker Hub и проверим что наш контейнер доехал
+
+![Image alt](https://github.com/mezhibo/Diplom/blob/dc524d33f6f7c3109adb35a02fd34c2d8bc3c3ed/IMG/16.jpg)
