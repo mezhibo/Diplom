@@ -614,7 +614,7 @@ all:
 ansible-playbook -i inventory/hosts.yml site.yml
 ```
 
-![Image alt]([скрин8](https://github.com/mezhibo/Diplom/blob/1e248f8ced6090ba91fd1e59c430e38e2ca06422/IMG/8.jpg))
+![Image alt](https://github.com/mezhibo/Diplom/blob/1e248f8ced6090ba91fd1e59c430e38e2ca06422/IMG/8.jpg)
 
 
 
