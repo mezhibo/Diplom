@@ -712,7 +712,7 @@ COPY index.html /usr/share/nginx/html
 ```
 Теперь запушим эти изменения в наш гитхаб репозиторий
 
-![Image alt]([скрин12](https://github.com/mezhibo/Diplom/blob/dc524d33f6f7c3109adb35a02fd34c2d8bc3c3ed/IMG/12.jpg))
+![Image alt](https://github.com/mezhibo/Diplom/blob/dc524d33f6f7c3109adb35a02fd34c2d8bc3c3ed/IMG/12.jpg)
 
 
 Создадим папку для приложения mkdir mynginx и скопируем в нее ранее созданые файлы.
