@@ -742,3 +742,82 @@ sudo docker build -t mezhibo/nginx:v1 .
 Зайдем в Docker Hub и проверим что наш контейнер доехал
 
 ![Image alt](https://github.com/mezhibo/Diplom/blob/dc524d33f6f7c3109adb35a02fd34c2d8bc3c3ed/IMG/16.jpg)
+
+
+Так, приложение в контейнер сбилдили, в Доке хаб закинули, теперь его будем оттуда забирать и деплоить в наш кубер - кластер.
+
+
+
+
+**Подготовка cистемы мониторинга и деплой приложения**
+
+
+Задеплоим свое приложение в наш кубер кластер
+
+
+Для этого создадим локальный репозиторий и создадим там файлы для наших сущностей кубера.
+
+
+Первым создадим файл для создания неймспейса.
+
+```
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: application
+```
+
+
+Далее создадим файл демонсета для деплоя нашего приложения из докер хаба, где мы его ранее опубликовывали
+
+```
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: nginx-deamonset
+  namespace: application
+spec:
+  selector:
+    matchLabels:
+      app: daemonset
+  template:
+    metadata:
+      labels:
+        app: daemonset
+    spec:
+      containers:
+      - name: nginx
+        image: mezhibo/nginx:v1
+```
+
+
+Так как у нас приложение простое и тестовое, не будем усложнять схему и вместо Ingress или LoadBalancer создаим тип сервиса Node-port
+
+Для проброса порт анашего приложения наружу
+
+
+```
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-service
+  namespace: application
+spec:
+  ports:
+    - name: nginx
+      port: 80
+      protocol: TCP
+      targetPort: 80
+      nodePort: 30000
+  selector:
+    app: daemonset
+  type: NodePort
+```
+
+Манифесты описаны, теперь запустим создание всех трех сущностей разом
+
+
+```
+kubectl apply -f .
+
+```
