@@ -645,11 +645,16 @@ ansible-playbook -i inventory/mycluster/hosts.yml cluster.yml -b -v
 
 В этот раз хватило и 12 минут)) 
 
+
 Видим что все завершилось у нас удачно
 
 
 ![Image alt](https://github.com/mezhibo/Diplom/blob/dc524d33f6f7c3109adb35a02fd34c2d8bc3c3ed/IMG/10.jpg)
 
+
+А вот в другой раз вышло аж 45 минут(((((
+
+![Image alt](https://github.com/mezhibo/Diplom/blob/f82bafc55f1ba39283344915c252eff9d8c5186f/IMG/18.jpg)
 
 Для выполнения команд kubectl без sudo скопируем папку .kube в домашнюю дирректорию пользователя и сменим владельца, а также группу владельцев папки с файлами:
 
