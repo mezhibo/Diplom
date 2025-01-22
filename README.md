@@ -639,7 +639,7 @@ ansible-playbook -i inventory/mycluster/hosts.yml cluster.yml -b -v
 
 Видим что пошел процесс развертывания кластера k8s
 
-![Image alt](https://github.com/mezhibo/Diplom/blob/1e248f8ced6090ba91fd1e59c430e38e2ca06422/IMG/9.jpg)
+![Image alt](https://github.com/mezhibo/Diplom/blob/1bd936baa7f16c3831ff84117f167158d75130b7/IMG/17.jpg)
 
 Процесс достаточно долгий, минут 20 точно.
 
