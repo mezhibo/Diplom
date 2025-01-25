@@ -829,7 +829,7 @@ kubectl apply -f .
 Теперь првоерим что все сущности созданы и работают
 
 
-![Image alt](скрин19)
+![Image alt](https://github.com/mezhibo/Diplom/blob/bf32392c7fb09354251598881e9fb2eb07111246/IMG/19.jpg)
 
 
 Теперь перейдем на по внешнему ip-адресу на проброшенный порт 30000 
@@ -837,7 +837,7 @@ kubectl apply -f .
 
 И видим что наше собранное приложение с кастомной веб-страницей работает
 
-![Image alt](скрин20)
+![Image alt](https://github.com/mezhibo/Diplom/blob/bf32392c7fb09354251598881e9fb2eb07111246/IMG/20.jpg)
 
 УРА!!! Наше приложение работает в кластере.
 
@@ -846,5 +846,75 @@ kubectl apply -f .
 *Теперь прикрутим мониторинг кластера*
 
 
+Склонируем себе рпозиторий, который рекомендуют в выполнении дипломной работы
+
+```
+git clone https://github.com/prometheus-operator/kube-prometheus.git
+```
+
+Теперь есть огромный нюанс с которым я бился очень долго и упорно, а именно нужно изменить тип сервиса 
+Grafana c ClusterIP на NodePort, для того чтобы веб-интерфейс графаны был проброшен на внешний айпи-адрес ноды, и можно было снаружи увидеть дашборды.
+
+Правим конфиг сервиса графаны
+
+```
+nano kube-prometheus/manifests/grafana-service.yaml
+```
+
+Удаляем все старое значение, и вписываем вот такое значение для сервиса
+
+```
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app.kubernetes.io/component: grafana
+    app.kubernetes.io/name: grafana
+    app.kubernetes.io/part-of: kube-prometheus
+    app.kubernetes.io/version: 11.4.0
+  name: grafana
+  namespace: monitoring
+spec:
+  type: NodePort
+  ports:
+  - name: http
+    port: 3000
+    targetPort: http
+    nodePort: 32000
+  selector:
+    app.kubernetes.io/component: grafana
+    app.kubernetes.io/name: grafana
+    app.kubernetes.io/part-of: kube-prometheus
+```
+
+Сохраняем конфиг с новым содержимым переходим в папку с файлами для деплоя, и запускаем наш стек мониторинга
+
+```
+cd kube-prometheus
+```
 
 
+```
+kubectl apply --server-side -f manifests/setup
+kubectl wait \
+ --for condition=Established \
+ --all CustomResourceDefinition \
+ --namespace=monitoring
+kubectl apply -f manifests/
+```
+
+И теперь командой проверим что все сущности нашего немйспейса monitoring работают
+
+```
+kubectl get all -n monitoring
+```
+
+Смотрим что все у нас поднялось и работает
+
+![Image alt](https://github.com/mezhibo/Diplom/blob/9b03a619c9bcfcd64ccc2374a28a94d7d42d5d8b/IMG/22.jpg)
+
+
+
+Теперь перейдем по внешнему ip-адресу однйо из нод, и убедимся что у нас работает мониторинг и графана получает данные о состоянии кластера
+
+![Image alt](скрин23)
