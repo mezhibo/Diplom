@@ -734,6 +734,9 @@ git clone https://github.com/mezhibo/Test-application.git
 Создадим в этом репозитории файл содержащую HTML-код ниже:
 index.html
 
+[index.html](https://github.com/mezhibo/Diplom/blob/f1188c91b4ace7179e618ed83edfe2d478f79540/Chapter3/index%2Chtml)
+
+
 ```
 <html>
 <head>
@@ -747,6 +750,9 @@ Hey, Netology
 
 Создадим Dockerfile, который будет запускать веб-сервер Nginx в фоне с индекс страницей:
 Dockerfile
+
+
+[Dockerfile](https://github.com/mezhibo/Diplom/blob/f1188c91b4ace7179e618ed83edfe2d478f79540/Chapter3/Dockerfile)
 
 ```
 FROM nginx:1.27-alpine
