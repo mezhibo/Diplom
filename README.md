@@ -6,6 +6,8 @@
 
 1) Подготовим манифест для сервисного аккаунта для доступа к S3-бакету в котором будут удаленно хранится наши Terraform-стейты
 
+[service-account.tf](https://github.com/mezhibo/Diplom/blob/6723c720b6d742d65cf0627a6a04928f250e874a/Chapter1/service-account.tf)
+
 ```
 # Создание сервисного аккаунта для Terraform
 resource "yandex_iam_service_account" "service" {
@@ -32,6 +34,8 @@ resource "yandex_iam_service_account_static_access_key" "terraform_service_accou
 
 2) Далее подготовим манифест нашего бэкэнда для удаленного хранения стейтов в S3
 
+[backend.tf.tf](https://github.com/mezhibo/Diplom/blob/04f38ecb1ffead6b2060fa19fbf36cb1fc9b29d6/Chapter1/backend.tf)
+
 ```
 # Создание объекта в существующей папке
 resource "yandex_storage_object" "backend" {
@@ -46,6 +50,8 @@ resource "yandex_storage_object" "backend" {
 
 
 3) Создадим сеть и подсети для наших виртуальных машин в разных зонах доступности
+
+[network.tf](https://github.com/mezhibo/Diplom/blob/389e653653cb6ea4b5dc7dbed825f2dfac77e784/Chapter1/network.tf)
 
 ```
 #Создание пустой VPC
@@ -80,6 +86,8 @@ resource "yandex_vpc_subnet" "subnet-d" {
 
 4) Создадим наш файл провайдера для доступа к Terraform
 
+[provider.tf](https://github.com/mezhibo/Diplom/blob/20fe2f4a3541433ebb669717d3755ce6718d862c/Chapter1/provider.tf)
+
 ```
 terraform {
   required_providers {
@@ -99,6 +107,8 @@ provider "yandex" {
 ```
 
 5) Подготовим манифест для  создания нашего S3 бакета для хранения стейтов
+
+[s3.tf](https://github.com/mezhibo/Diplom/blob/05c30a88e619d2eb6e01ec2f14b3874935026e43/Chapter1/s3.tf)
 
 ```
 # Создадим бакет с использованием ключа
