@@ -1,0 +1,175 @@
+# ---
+# - name: Установка pip
+#   hosts: master-1
+#   become: true
+
+#   tasks:
+#     - name: Обновить apt-кэш
+#       apt:
+#         update_cache: yes
+
+#     - name: Установить необходимые зависимости
+#       apt:
+#         name:
+#           - software-properties-common
+#           - build-essential
+#           - libssl-dev
+#           - libbz2-dev
+#           - libreadline-dev
+#           - libsqlite3-dev
+#           - wget
+#           - curl
+#           - llvm
+#           - libffi-dev
+#           - zlib1g-dev
+#         state: present
+
+#     - name: Установить Git
+#       apt:
+#         name: git
+#         state: present
+
+#     - name: Установить Python 3.11
+#       apt:
+#         name: python3.11
+#         state: present
+    
+        
+#     - name: Скачиваем файл get-pip.py
+#       ansible.builtin.get_url:
+#         url: https://bootstrap.pypa.io/get-pip.py
+#         dest: "./"
+
+#     - name: Удаляем EXTERNALLY-MANAGED
+#       ansible.builtin.file:
+#         path: /usr/lib/python3.11/EXTERNALLY-MANAGED
+#         state: absent
+
+#     - name: Устанавливаем pip
+#       ansible.builtin.shell: python3.11 get-pip.py
+
+
+
+# - name: Установка зависимостей из ansible-playbook kubespray
+#   hosts: master-1
+#   become: true
+
+#   tasks:
+    
+#     - name: Клонируем kubespray из репозитория
+#       ansible.builtin.git:
+#         repo: https://github.com/kubernetes-sigs/kubespray.git
+#         dest: ./kubespray
+
+#     - name: Изменение прав на папку kubspray
+#       ansible.builtin.file:
+#         dest: ./kubespray
+#         recurse: yes
+#         owner: ubuntu
+#         group: ubuntu
+
+#     - name: Установка зависимостей из requirements.txt
+#       ansible.builtin.pip:
+#         requirements: /home/ubuntu/kubespray/requirements.txt
+#         extra_args: -r /home/ubuntu/kubespray/requirements.txt
+
+#     - name: Копирование содержимого папки inventory/sample в папку inventory/mycluster
+#       ansible.builtin.copy:
+#         src: /home/ubuntu/kubespray/inventory/sample/
+#         dest: /home/ubuntu/kubespray/inventory/mycluster/
+#         remote_src: true
+
+
+# - name: Подготовка master-node к установке kubespray из ansible-playbook
+#   hosts: master-1
+#   become: true
+
+#   tasks:
+
+#     - name: Копирование на master-node файла hosts.yml
+#       ansible.builtin.copy:
+#         src: ./inventory/hosts.yml
+#         dest: ./kubespray/inventory/mycluster/
+
+#     - name: Копирование на мастер приватного ключа
+#       ansible.builtin.copy:
+#         src: /root/.ssh/id_rsa
+#         dest: ./.ssh
+#         owner: ubuntu
+#         mode: '0600'
+
+---
+- name: Установка pip
+  hosts: master-1
+  become: true
+
+  tasks:
+
+    - name: Скачиваем файл get-pip.py
+      ansible.builtin.get_url:
+        url: https://bootstrap.pypa.io/get-pip.py
+        dest: "./"
+
+    - name: Удаляем EXTERNALLY-MANAGED
+      ansible.builtin.file:
+        path: /usr/lib/python3.11/EXTERNALLY-MANAGED
+        state: absent
+
+    - name: Устанавливаем pip
+      ansible.builtin.shell: python3.11 get-pip.py
+
+
+
+- name: Установка зависимостей из ansible-playbook kubespray
+  hosts: master-1
+  become: true
+
+  tasks:
+
+    - name: Выполнение apt update и установка git
+      ansible.builtin.apt:
+        update_cache: true
+        pkg:
+        - git
+
+    - name: Клонируем kubespray из репозитория
+      ansible.builtin.git:
+        repo: https://github.com/kubernetes-sigs/kubespray.git
+        dest: ./kubespray
+
+    - name: Изменение прав на папку kubspray
+      ansible.builtin.file:
+        dest: ./kubespray
+        recurse: yes
+        owner: debian
+        group: debian
+
+    - name: Установка зависимостей из requirements.txt
+      ansible.builtin.pip:
+        requirements: /home/debian/kubespray/requirements.txt
+        extra_args: -r /home/debian/kubespray/requirements.txt
+
+    - name: Копирование содержимого папки inventory/sample в папку inventory/mycluster
+      ansible.builtin.copy:
+        src: /home/debian/kubespray/inventory/sample/
+        dest: /home/debian/kubespray/inventory/mycluster/
+        remote_src: true
+
+
+- name: Подготовка master-node к установке kubespray из ansible-playbook
+  hosts: master-1
+  become: true
+
+  tasks:
+
+    - name: Копирование на master-node файла hosts.yml
+      ansible.builtin.copy:
+        src: ./inventory/hosts.yml
+        dest: ./kubespray/inventory/mycluster/
+
+    - name: Копирование на мастер приватного ключа
+      ansible.builtin.copy:
+        src: /root/.ssh/id_rsa
+        dest: ./.ssh
+        owner: debian
+        mode: '0600'
