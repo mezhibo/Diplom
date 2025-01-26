@@ -634,6 +634,10 @@ sudo chown -R debian:debian ~/kubespray
 Переходим в репу и запускаем роль
 
 ```
+cd kubespay
+```
+
+```
 ansible-playbook -i inventory/mycluster/hosts.yml cluster.yml -b -v
 ```
 
