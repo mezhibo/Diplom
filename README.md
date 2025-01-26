@@ -129,6 +129,9 @@ resource "yandex_storage_bucket" "state_storage" {
 
 6) Заполним файл с перменными для получения всех значений в наших манифестах
 
+
+[variables.tf](https://github.com/mezhibo/Diplom/blob/b6a17bcbad6932fedc87e09a760ec1f08dd03d24/Chapter1/variables.tf)
+
 ```
 #cloud vars
 variable "token" {
@@ -290,6 +293,9 @@ Yandex Managed Service for Kubernetes от Yandex Cloud более узкнон�
 
 Описываем tf мастер-ноду
 
+[master-node.tf](https://github.com/mezhibo/Diplom/blob/913447f3ac52f0f7b08df2fc04159d425582a850/Chapter2/master-node.tf)
+
+
 ```
 # Ресурсы для создания master-node
 
@@ -338,6 +344,10 @@ resource "yandex_compute_instance" "master-node" {
 
 Так как воркер-нод у меня 2, самым правильным вариантом считаю создать ее через счетчик (count)
 
+
+[worker-node.tf](https://github.com/mezhibo/Diplom/blob/00017d031f7693595c69a1d257f6506271e8c95e/Chapter2/worker-node.tf)
+
+
 ```
 # Ресурсы для создания worker-node
 
@@ -376,9 +386,14 @@ resource "yandex_compute_instance" "worker-node" {
 }
 ```
 
+
 Теперь дополним наш файл с переменнынми нашими map-переменными для описания ресурсов наших виртуальных машин.
 
+[variables.tf](https://github.com/mezhibo/Diplom/blob/7b54d9d0afbbedbb6a81ee44b8d4bd75a94f45f9/Chapter2/variables.tf)
+  
 Добавим код ниже
+
+
 
 ```
 # Переменные для master-node
@@ -455,6 +470,9 @@ variable "boot_disk_worker" {
 
 Первым этапом подготовим terrafrom-output созданных нами ВМ
 
+[outputs.tf](https://github.com/mezhibo/Diplom/blob/b12f989871514b64e5fc07cd9649a2b0fff9bde4/Chapter2/outputs.tf)
+
+
 ```
 output "master-node" {
   value = flatten([
@@ -479,6 +497,7 @@ output "worker-node" {
 
 Далее опишем манифест создания нашего инвентори-файла на основе шаблона
 
+[create-hosts.tf](https://github.com/mezhibo/Diplom/blob/e779e4f9ac0b9167ae6a0062ed2e851d62398d7f/Chapter2/create-hosts.tf)
 
 ```
 resource "local_file" "hosts_yml_kubespray" {
@@ -492,6 +511,9 @@ resource "local_file" "hosts_yml_kubespray" {
 ```
 
 Теперь подготовим сам шаблон в формате tftpl в который и будут приниматься значения terraform-output
+
+[hosts.tftpl](https://github.com/mezhibo/Diplom/blob/c8c971b721876d518faea080d7dac2357a6654fd/Chapter2/hosts.tftpl)
+
 
 ```
 all:
@@ -539,6 +561,8 @@ all:
 
 Все, видим что все отлично, теперь подготовим Ansible - плейбук, который подготовит наш мастер-хост к настройке воркер-нод через kubespray
 
+
+[site.yml](https://github.com/mezhibo/Diplom/blob/18ff462c131613ce306e9d4787c41837dd1faa45/Chapter2/site.yml)
 
 ```
 - name: Установка pip
@@ -764,6 +788,12 @@ sudo docker build -t mezhibo/nginx:v1 .
 
 
 Так, приложение в контейнер сбилдили, в Доке хаб закинули, теперь его будем оттуда забирать и деплоить в наш кубер - кластер.
+
+
+[ПРИЛОЖЕНИЕ_НА_ГИТХАБ](https://github.com/mezhibo/Test-application.git)
+
+
+[ПРИЛОЖЕНИЕ_НА_ДОКЕРХАБ](https://hub.docker.com/repository/docker/mezhibo/nginx/general)
 
 
 
