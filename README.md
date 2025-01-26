@@ -34,7 +34,7 @@ resource "yandex_iam_service_account_static_access_key" "terraform_service_accou
 
 2) Далее подготовим манифест нашего бэкэнда для удаленного хранения стейтов в S3
 
-[backend.tf.tf](https://github.com/mezhibo/Diplom/blob/04f38ecb1ffead6b2060fa19fbf36cb1fc9b29d6/Chapter1/backend.tf)
+[backend.tf](https://github.com/mezhibo/Diplom/blob/04f38ecb1ffead6b2060fa19fbf36cb1fc9b29d6/Chapter1/backend.tf)
 
 ```
 # Создание объекта в существующей папке
