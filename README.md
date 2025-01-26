@@ -813,17 +813,19 @@ sudo docker build -t mezhibo/nginx:v1 .
 Для этого создадим локальный репозиторий и создадим там файлы для наших сущностей кубера.
 
 
-Первым создадим файл для создания неймспейса.
+Первым делом создадим неймспейс под наше приложение
 
 ```
-apiVersion: v1
-kind: Namespace
-metadata:
-  name: application
+kubectl create namespace application
+
 ```
+
 
 
 Далее создадим файл демонсета для деплоя нашего приложения из докер хаба, где мы его ранее опубликовывали
+
+
+[Nginx-DaemonSet.yml](https://github.com/mezhibo/Diplom/blob/34384c711e6518f903256846af1c9128a28fcefa/Chapter4/Nginx-DaemonSet.yml)
 
 ```
 apiVersion: apps/v1
@@ -850,6 +852,7 @@ spec:
 
 Для проброса порт анашего приложения наружу
 
+[Nginx-Service.yml](https://github.com/mezhibo/Diplom/blob/34384c711e6518f903256846af1c9128a28fcefa/Chapter4/Nginx-Service.yml)
 
 ```
 apiVersion: v1
@@ -912,6 +915,8 @@ nano kube-prometheus/manifests/grafana-service.yaml
 ```
 
 Удаляем все старое значение, и вписываем вот такое значение для сервиса
+
+[grafana-svc.yml](https://github.com/mezhibo/Diplom/blob/34384c711e6518f903256846af1c9128a28fcefa/Chapter4/grafana-svc.yml)
 
 ```
 apiVersion: v1
