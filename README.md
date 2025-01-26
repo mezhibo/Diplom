@@ -987,3 +987,70 @@ kubectl get all -n monitoring
 Для автоматической сборки и docker-образа при коммите в репозиторий с тестовым приложением воспользуемся платформой CI/CD GitHub Actions
 
 
+Для начала зайдем на докер-хаб и создадим персональный токен 
+
+Запишем эти 2 значения юзера и токена себе в блокнот
+
+
+![Image alt](https://github.com/mezhibo/Diplom/blob/3923ca578c63cba70f495f0b1142de101dc25de1/IMG/26.jpg)
+
+
+
+Цепочку CI/CD настроим через Github Action
+
+Для этого создадим 2 секрета в Github для репозитория где хранится наше тестовое приложение в которых будут хранится наши логин и токен для доступа в докер-хаб
+
+
+![Image alt](https://github.com/mezhibo/Diplom/blob/3923ca578c63cba70f495f0b1142de101dc25de1/IMG/27.jpg)
+
+
+Далее, создадим workflow файл для автоматической сборки приложения nginx: 
+
+[build.yml](https://github.com/mezhibo/Diplom/blob/d2f0b2f2e3735e8838899711a8872f6883e8e522/Chapter5/build.yml)
+
+
+```
+name: Сборка Docker-образа
+
+on:
+  push:
+    branches:
+      - '*'
+jobs:
+  my_build_job:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Проверка кода
+        uses: actions/checkout@v4
+
+      - name: Вход на Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.USER_DOCKER_HUB }}
+          password: ${{ secrets.MY_TOKEN_DOCKER_HUB }}
+
+      - name: Сборка Docker-образа
+        run: |
+          docker build . --file Dockerfile --tag nginx:latest
+          docker tag nginx:latest ${{ secrets.USER_DOCKER_HUB }}/nginx:latest
+
+      - name: Push Docker-образа в Docker Hub
+        run: |
+          docker push ${{ secrets.USER_DOCKER_HUB }}/nginx:latest
+```
+
+Проверим что workflow успешно выполнился
+
+
+![Image alt](https://github.com/mezhibo/Diplom/blob/3923ca578c63cba70f495f0b1142de101dc25de1/IMG/28.jpg)
+
+
+
+Перейдем в докерхаб и увидим что появился загруженный образ
+
+
+![Image alt](https://github.com/mezhibo/Diplom/blob/3923ca578c63cba70f495f0b1142de101dc25de1/IMG/29.jpg)
+
+
+[ССЫЛКА_НА_ДОКЕРХАБ](https://hub.docker.com/repository/docker/mezhibo/nginx/general)
